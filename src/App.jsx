@@ -15,8 +15,8 @@ function App() {
   });
 
   const [result, setResult] = useState(null);
+const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/rentals/analyze`;
 
-const API_URL = "https://rental-fraud-backend-1.onrender.com/api/rentals/analyze";
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
