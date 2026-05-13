@@ -15,8 +15,12 @@ function App() {
   });
 
   const [result, setResult] = useState(null);
-const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/rentals/analyze`;
 
+  // Backend API URL
+  const API_URL =
+    `${import.meta.env.VITE_API_BASE_URL}/api/rentals/analyze`;
+
+  console.log("API URL:", API_URL);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -38,19 +42,32 @@ const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/rentals/analyze`;
 
     try {
       const response = await axios.post(API_URL, requestData);
+
       setResult(response.data);
+
     } catch (error) {
-      alert("Error while checking rental fraud");
       console.log(error);
+
+      if (error.response) {
+        alert(`Server Error: ${error.response.status}`);
+      } else if (error.request) {
+        alert("Cannot connect to backend server");
+      } else {
+        alert("Unexpected error occurred");
+      }
     }
   };
 
   return (
     <div className="container">
       <h1>Rental Fraud Detection</h1>
-      <p>Check whether a rental property looks suspicious or safe.</p>
+
+      <p>
+        Check whether a rental property looks suspicious or safe.
+      </p>
 
       <form onSubmit={handleSubmit} className="form">
+
         <input
           type="text"
           name="ownerName"
@@ -120,9 +137,11 @@ const API_URL = `${import.meta.env.VITE_API_BASE_URL}/api/rentals/analyze`;
           value={form.description}
           onChange={handleChange}
           required
-        ></textarea>
+        />
 
-        <button type="submit">Check Fraud Risk</button>
+        <button type="submit">
+          Check Fraud Risk
+        </button>
       </form>
 
       {result && (
